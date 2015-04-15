@@ -52,15 +52,29 @@ namespace CataneReader
 
 
 
+        public string FilePath
+        {
+            get { return (string)GetValue(FilePathProperty); }
+            set { SetValue(FilePathProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for FilePath.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty FilePathProperty =
+            DependencyProperty.Register("FilePath", typeof(string), typeof(MainWindow));
+
+        
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
 
-            reader = new Reader(@"D:\Source\Python\aiCatane\Source\out.txt");
+            FilePath = @"D:\Source\Python\aiCatane\Source\out.txt";
+            reader = new Reader(FilePath);
 
             reader.Parsed += reader_Parsed;
 
-            DataContext = this;
+
 
             reader.Parse();
         }
@@ -109,6 +123,15 @@ namespace CataneReader
                 Current = (int)e.NewValue;
                 TheMap.Text = Maps[Current];
             }
+        }
+
+        private void ThePath_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            reader.Parsed -= reader_Parsed;
+            reader.Dispose();
+
+            reader = new Reader(FilePath);
+            reader.Parsed += reader_Parsed;
         }
     }
 }

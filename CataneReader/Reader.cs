@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace CataneReader
 {
-    class Reader
+    class Reader : IDisposable
     {
         protected FileSystemWatcher _watcher;
         protected string _filePath;
@@ -83,6 +83,13 @@ namespace CataneReader
                 Thread.Sleep(1000);
                 Parse();
             }
+        }
+
+        public void Dispose()
+        {
+            _watcher.EnableRaisingEvents = false;
+            _watcher.Changed -= _watcher_Changed;
+            _watcher.Created -= _watcher_Created;
         }
     }
 }
