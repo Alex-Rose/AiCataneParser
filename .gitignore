@@ -1,0 +1,4 @@
+*.pdb
+*.suo
+CataneReader/bin/Debug/*
+CataneReader/obj/Debug/*
